@@ -3,6 +3,8 @@ package com.tangpj.recyclerutils;
 import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
 
+import java.util.List;
+
 /**
  * @ClassName: ISimpleAdapter
  * @author create by Tang
@@ -30,4 +32,13 @@ public interface ISimpleAdapter<E> {
      */
 
     void onBindNormalView (RecyclerView.ViewHolder normalHolder, int position,E value);
+
+    void setData(List<E> data);
+
+    void addItem(E value);
+
+    void removeItem(E value);
+
+    void removeItem(int position);
+
 }

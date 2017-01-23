@@ -2,6 +2,7 @@ package com.tangpj.recyclerutils;
 
 
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 import android.view.ViewGroup;
 
 /**
@@ -33,5 +34,16 @@ public interface ICreateHeaderView {
      */
     RecyclerView.ViewHolder onCreateHeader(ViewGroup parent);
 
-    void onBindHeaderView(RecyclerView.ViewHolder normalHolder, int position);
+    /**
+     * @Method: onBindHeaderView
+     * @author create by Tang
+     * @date date 17/1/23 上午10:26
+     * @Description: 如果子类需要对header作任何处理
+     * 需要覆盖该方法
+     * @param header headerHolder中的itemView
+     *               通过<header/>可以处理<header/>
+     *               中的控件
+     * @param position header所在的位置
+     */
+    void onBindHeaderView(View header, int position);
 }

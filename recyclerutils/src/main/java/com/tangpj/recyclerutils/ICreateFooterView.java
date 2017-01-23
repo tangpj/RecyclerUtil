@@ -1,6 +1,7 @@
 package com.tangpj.recyclerutils;
 
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 import android.view.ViewGroup;
 
 /**
@@ -31,5 +32,17 @@ public interface ICreateFooterView {
      */
     RecyclerView.ViewHolder onCreateFooterView(ViewGroup parent);
 
-    void onBindFooterView(RecyclerView.ViewHolder normalHolder, int position);
+
+    /**
+     * @Method: onBindHeaderView
+     * @author create by Tang
+     * @date date 17/1/23 上午10:26
+     * @Description: 如果子类需要对header作任何处理
+     * 需要覆盖该方法
+     * @param footer footerHolder中的itemView
+     *               通过<footer/>可以处理<footer/>
+     *               中的控件
+     * @param position footer所在的位置
+     */
+    void onBindFooterView(View footer, int position);
 }
