@@ -21,9 +21,9 @@ import java.util.List;
 public abstract class SimpleAdapter<E> extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         implements ISimpleAdapter<E>,ICreateHeaderView,ICreateFooterView{
 
+    private static final int TYPE_NORMAL = 0;
     private static final int TYPE_HEADER = 1;
     private static final int TYPE_FOOTER = 2;
-    private static final int TYPE_NORMAL = 3;
 
     private List<E> data;
 

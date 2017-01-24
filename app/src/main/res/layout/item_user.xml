@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="horizontal"
     android:layout_width="match_parent"
+    android:background="#ffffff"
     android:layout_height="48dp">
 
     <TextView
@@ -27,6 +28,7 @@
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:gravity="center"
+        android:visibility="gone"
         tools:text="男"  />
 
 </LinearLayout>

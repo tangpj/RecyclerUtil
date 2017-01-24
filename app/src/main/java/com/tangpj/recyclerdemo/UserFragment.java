@@ -11,6 +11,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.tangpj.recyclerutils.RecyclerViewDivider;
+
 import java.util.Arrays;
 
 /**
@@ -37,10 +39,14 @@ public class UserFragment extends Fragment{
         RecyclerView userList = (RecyclerView) view.findViewById(R.id.fragment_user_list);
 
         adapter = new UserAdapter();
-        userList.setLayoutManager(new LinearLayoutManager(getActivity()));
+        LinearLayoutManager lm = new LinearLayoutManager(getActivity());
+        GridLayoutManager gm = new GridLayoutManager(getActivity(),3);
+        StaggeredGridLayoutManager sm = new StaggeredGridLayoutManager(3,StaggeredGridLayoutManager.VERTICAL);
+        userList.setLayoutManager(sm);
 
         userList.setAdapter(adapter);
         adapter.setData(Arrays.asList(User.values()));
+        userList.addItemDecoration(RecyclerViewDivider.newTransparentDivider(getActivity(),16));
     }
 
 
