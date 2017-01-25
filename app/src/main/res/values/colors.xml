@@ -7,4 +7,5 @@
     <color name="windowsColorLight">#FFFFFF</color>
     <color name="windowsColor">#F8F7F6</color>
     <color name="windowsColorDark">#EFEFEF</color>
+    <color name="windowsColorBlack">#000</color>
 </resources>

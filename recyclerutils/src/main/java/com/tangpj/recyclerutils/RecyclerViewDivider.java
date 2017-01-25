@@ -28,6 +28,7 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration{
 
     //间隔
     private int interval = 0;
+    private int recoupInterval = 0;
 
     private static DividerStyle style;
     private Drawable mDivider;
@@ -132,8 +133,6 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration{
             drawHorizontal(c,parent);
             drawVertical(c,parent);
 
-
-
         }
     }
 
@@ -149,8 +148,11 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration{
                 view.getLayoutParams()).getViewLayoutPosition() - specialView;
         int spanCount = getSpanCount(parent);
         int childCount = parent.getAdapter().getItemCount() - specialView;
-        Log.d(TAG, "getItemOffsets: childCount = " + childCount);
-        if (layoutManager instanceof LinearLayoutManager){
+        if (layoutManager instanceof GridLayoutManager){
+            int span = ((GridLayoutManager)layoutManager).getSpanCount() - 1;
+            recoupInterval = this.interval / span;
+            recoupInterval += recoupInterval;
+        }else if (layoutManager instanceof LinearLayoutManager){
             LinearLayoutManager lm = (LinearLayoutManager) layoutManager;
             int orientation = lm.getOrientation();
             if ( orientation == LinearLayoutManager.VERTICAL) {
@@ -159,35 +161,25 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration{
                 outRect.set(0, 0, interval, 0);
             }
             return;
+        }else if (layoutManager instanceof StaggeredGridLayoutManager){
+            int span = ((StaggeredGridLayoutManager)layoutManager).getSpanCount() - 1;
+            recoupInterval = this.interval / span;
         }
 
-        // 如果是最后一行，则不需要绘制底部
-        if (isLastRaw(parent, position, spanCount, childCount)) {
-            outRect.set(0, 0, interval, interval);
-            // 如果是最后一列，则不需要绘制右边
-        } else if (isLastColumn(parent, position, spanCount, childCount)) {
-            outRect.set(0, 0, 0, interval);
+
+        if (isFirstColumn(parent,position,spanCount,childCount)){
+            Log.d(TAG, "getItemOffsets: first column = " + position);
+            outRect.set(0, 0, interval - recoupInterval, interval);
+        }else if (isLastColumn(parent, position, spanCount, childCount)) {
+            Log.d(TAG, "getItemOffsets: last column = " + position);
+            outRect.set(interval - recoupInterval, 0, 0, interval);
+        }else if (isLastRaw(parent, position, spanCount, childCount)) {
+            Log.d(TAG, "getItemOffsets: last raw = " + position);
+            outRect.set(recoupInterval, 0, interval - recoupInterval , interval);
         } else {
-            outRect.set(0, 0, interval, interval);
+            Log.d(TAG, "getItemOffsets: normal = " + position);
+            outRect.set(recoupInterval, 0, interval - recoupInterval, interval);
         }
-//        if (isFirstRaw(parent, position, spanCount, childCount)) {
-//            if (!isLastColumn(parent, position, spanCount, childCount)){
-//                outRect.set(interval, interval, 0, interval);
-//            } else{
-//                outRect.set(interval, interval, interval, interval);
-//            }
-//        }else if (isLastRaw(parent,position,spanCount,childCount)){
-//            if (!isLastColumn(parent,position,spanCount,childCount)){
-//                outRect.set(interval,0,0,0);
-//            }else {
-//                outRect.set(interval,interval,interval,0);
-//            }
-//        }
-//        else if (isLastColumn(parent, position, spanCount, childCount)) {
-//            outRect.set(interval, 0, interval, interval);
-//        } else {
-//            outRect.set(interval, 0, 0, interval);
-//        }
 
     }
 
@@ -232,6 +224,29 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration{
         return span;
     }
 
+
+    private boolean isFirstColumn(RecyclerView parent,int position,int span, int childCount){
+        RecyclerView.LayoutManager layoutManager = parent.getLayoutManager();
+        if (position == 0){
+            return true;
+        }
+        if (layoutManager instanceof GridLayoutManager){
+            if (((position + 1) % span) == 1){
+                return true;
+            }
+        }else if (layoutManager instanceof StaggeredGridLayoutManager){
+            int orientation = ((StaggeredGridLayoutManager)layoutManager).getOrientation();
+            if (orientation == StaggeredGridLayoutManager.VERTICAL){
+                if (((position + 1) % span) == 1){
+                    return true;
+                }
+            }else if (position < span){
+                return true;
+            }
+        }
+        return false;
+    }
+
     /**
      * @Method: isLastColumn
      * @author create by Tang
@@ -240,9 +255,6 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration{
      */
     private boolean isLastColumn(RecyclerView parent,int position,int span,int childCount){
         RecyclerView.LayoutManager layoutManager = parent.getLayoutManager();
-        if (position == childCount - 1){
-            return true;
-        }
         if (layoutManager instanceof GridLayoutManager ){
 
             if ((position + 1) % span == 0){
@@ -265,33 +277,6 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration{
         return false;
     }
 
-
-    private boolean isFirstRaw(RecyclerView parent, int pos, int spanCount
-            , int childCount){
-        RecyclerView.LayoutManager layoutManager = parent.getLayoutManager();
-        if (layoutManager instanceof GridLayoutManager){
-            if (((GridLayoutManager)layoutManager).getSpanSizeLookup().getSpanSize(pos) == spanCount){
-                return false;
-            }
-            if (pos < spanCount){
-                return true;
-            }
-        }else if(layoutManager instanceof StaggeredGridLayoutManager){
-            int orientation = ((StaggeredGridLayoutManager) layoutManager).getOrientation();
-            if (orientation == StaggeredGridLayoutManager.VERTICAL){
-                if (pos < spanCount){
-                    return true;
-                }
-            }else if(spanCount == 1){
-                return true;
-            } else {
-                if ((pos + 1) % spanCount == 1){
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
 
 
 

@@ -8,7 +8,7 @@ package com.tangpj.recyclerdemo;
  */
 
 public enum  User {
-
+    USER0("USER0",16),
     USER1("USER1",16),
     USER2("USER2",16),
     USER3("USER3",16),
@@ -22,7 +22,8 @@ public enum  User {
     USER11("USER11",16),
     USER12("USER12",16),
     USER13("USER13",16),
-    USER14("USER14",16),
+//    USER14("USER14",16),
+//    USER15("USER15",16),
     ;
 
     public String name;
