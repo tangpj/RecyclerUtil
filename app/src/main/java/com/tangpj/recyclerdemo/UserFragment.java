@@ -41,7 +41,7 @@ public class UserFragment extends Fragment{
         adapter = new UserAdapter();
         LinearLayoutManager lm = new LinearLayoutManager(getActivity());
         GridLayoutManager gm = new GridLayoutManager(getActivity(),3);
-        StaggeredGridLayoutManager sm = new StaggeredGridLayoutManager(5,StaggeredGridLayoutManager.VERTICAL);
+        StaggeredGridLayoutManager sm = new StaggeredGridLayoutManager(3,StaggeredGridLayoutManager.VERTICAL);
         userList.setLayoutManager(sm);
 
         userList.setAdapter(adapter);

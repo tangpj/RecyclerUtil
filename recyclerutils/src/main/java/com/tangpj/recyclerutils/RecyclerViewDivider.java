@@ -24,22 +24,21 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration{
 
     private static final String TAG = "RecyclerViewDivider";
 
-    private Context context;
 
     //间隔
-    private int interval = 0;
-    private int recoupInterval = 0;
+    private int interval;
+    //纵向分割线的补偿量
+    private int recoupInterval;
+    //分割线补偿余数，用于最后一列
+    private int recoupResidue;
+    //用来计算item间分割线的偏移系数
+    private int intervalOffset;
+    //
 
     private static DividerStyle style;
     private Drawable mDivider;
     private static final int[] ATTRS = new int[] {android.R.attr.listDivider};
 
-    /**
-     * 用来记录特殊view的数量
-     * 在这个库中主要作用时又来记录headerView和footerView
-     * 在RecyclerView的数量（0、1、2)
-     */
-    private int specialView = 0;
 
     /**
      * @ClassName: DividerType
@@ -55,7 +54,6 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration{
     }
 
     private RecyclerViewDivider(Context context, float interval){
-        this.context = context;
         this.interval = (int) TypedValue.applyDimension(
                 TypedValue.COMPLEX_UNIT_DIP,interval,context.getResources().getDisplayMetrics());
         if (style == DividerStyle.LINES){
@@ -122,6 +120,9 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration{
         super.onDraw(c, parent, state);
         if (style == DividerStyle.LINES){
             RecyclerView.LayoutManager lm = parent.getLayoutManager();
+            if (lm instanceof GridLayoutManager){
+                drawVertical(c,parent);
+            }
             if (lm instanceof LinearLayoutManager){
                 if (((LinearLayoutManager) lm).getOrientation() == LinearLayoutManager.VERTICAL){
                     drawHorizontal(c,parent);
@@ -139,19 +140,34 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration{
     @Override
     public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
         super.getItemOffsets(outRect, view, parent, state);
+        int span;
+        int position;
         RecyclerView.LayoutManager layoutManager = parent.getLayoutManager();
-        if (layoutManager.getItemViewType(view) != 0){
-            specialView ++;
+        RecyclerView.Adapter adapter = parent.getAdapter();
+        if (layoutManager.getItemViewType(view) == SimpleAdapter.TYPE_HEADER){
+            outRect.set(0, 0, 0, interval);
             return;
         }
-        int position = ((RecyclerView.LayoutParams)
-                view.getLayoutParams()).getViewLayoutPosition() - specialView;
+        if (layoutManager.getItemViewType(view) == SimpleAdapter.TYPE_FOOTER){
+            return;
+        }
+        if (adapter.getItemViewType(0) != 0){
+            position = layoutManager.getPosition(view) - 1;
+        }else {
+            position = layoutManager.getPosition(view);
+        }
+
+
         int spanCount = getSpanCount(parent);
-        int childCount = parent.getAdapter().getItemCount() - specialView;
+        int childCount = parent.getAdapter().getItemCount();
         if (layoutManager instanceof GridLayoutManager){
-            int span = ((GridLayoutManager)layoutManager).getSpanCount() - 1;
-            recoupInterval = this.interval / span;
-            recoupInterval += recoupInterval;
+            span = ((GridLayoutManager)layoutManager).getSpanCount() - 1;
+            if (recoupInterval == 0 ) {
+                recoupInterval = this.interval / (span + 1);
+                recoupResidue = this.interval % (span + 1);
+            }
+            outGridVerticalRect(outRect,parent,position,spanCount,childCount);
+            return;
         }else if (layoutManager instanceof LinearLayoutManager){
             LinearLayoutManager lm = (LinearLayoutManager) layoutManager;
             int orientation = lm.getOrientation();
@@ -162,23 +178,64 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration{
             }
             return;
         }else if (layoutManager instanceof StaggeredGridLayoutManager){
-            int span = ((StaggeredGridLayoutManager)layoutManager).getSpanCount() - 1;
-            recoupInterval = this.interval / span;
+            StaggeredGridLayoutManager sl = (StaggeredGridLayoutManager)layoutManager;
+            span = sl.getSpanCount() - 1;
+            if (sl.getOrientation() == StaggeredGridLayoutManager.VERTICAL){
+                if (recoupInterval == 0){
+                    recoupInterval = this.interval / (span + 1);
+                    recoupResidue = this.interval % (span + 1);
+                }
+                outGridVerticalRect(outRect,parent,position,spanCount,childCount);
+                return;
+            }
+
+            outGridHorizontalRect(outRect,parent,position,spanCount,childCount);
+
         }
 
 
+
+
+    }
+
+    private void outGridVerticalRect(Rect outRect,RecyclerView parent,int position,int spanCount,int childCount){
         if (isFirstColumn(parent,position,spanCount,childCount)){
-            Log.d(TAG, "getItemOffsets: first column = " + position);
             outRect.set(0, 0, interval - recoupInterval, interval);
+            intervalOffset = 1;
+
         }else if (isLastColumn(parent, position, spanCount, childCount)) {
-            Log.d(TAG, "getItemOffsets: last column = " + position);
-            outRect.set(interval - recoupInterval, 0, 0, interval);
+            outRect.set(interval - (recoupInterval + recoupResidue),
+                    0,
+                    0,
+                    interval);
         }else if (isLastRaw(parent, position, spanCount, childCount)) {
-            Log.d(TAG, "getItemOffsets: last raw = " + position);
-            outRect.set(recoupInterval, 0, interval - recoupInterval , interval);
+            outRect.set(recoupInterval * (intervalOffset - 1)
+                    , 0
+                    , interval - recoupInterval * intervalOffset
+                    , interval);
         } else {
-            Log.d(TAG, "getItemOffsets: normal = " + position);
-            outRect.set(recoupInterval, 0, interval - recoupInterval, interval);
+            outRect.set(recoupInterval * (intervalOffset - 1)
+                    , 0
+                    , interval - recoupInterval * intervalOffset
+                    , interval);
+        }
+        intervalOffset++;
+    }
+
+    private void outGridHorizontalRect(Rect outRect,RecyclerView parent,int position,int spanCount,int childCount){
+        if (isFirstColumn(parent,position,spanCount,childCount)){
+            outRect.set(0, 0, interval, interval);
+            intervalOffset = 1;
+
+        }else if (isLastColumn(parent, position, spanCount, childCount)) {
+            outRect.set(0,
+                    0,
+                    0,
+                    interval);
+        }else if (isLastRaw(parent, position, spanCount, childCount)) {
+            outRect.set(0, 0, interval, interval);
+        } else {
+            outRect.set(0, 0, interval, interval);
         }
 
     }
@@ -225,6 +282,12 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration{
     }
 
 
+    /**
+     * @Method: isFirstColumn
+     * @author create by Tang
+     * @date date 17/2/4 上午11:06
+     * @Description: 判断是否是第一列
+     */
     private boolean isFirstColumn(RecyclerView parent,int position,int span, int childCount){
         RecyclerView.LayoutManager layoutManager = parent.getLayoutManager();
         if (position == 0){
@@ -240,8 +303,10 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration{
                 if (((position + 1) % span) == 1){
                     return true;
                 }
-            }else if (position < span){
-                return true;
+            }else {
+                if (position < span){
+                    return true;
+                }
             }
         }
         return false;
@@ -269,7 +334,7 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration{
             }else {
                 //大于该值的item位于最后一列中
                 int lastColumn = childCount - childCount % span;
-                if (position > lastColumn){
+                if (position >= lastColumn){
                     return true;
                 }
             }
@@ -289,18 +354,17 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration{
     private boolean isLastRaw(RecyclerView parent,int position,int span,int childCount){
         RecyclerView.LayoutManager layoutManager = parent.getLayoutManager();
         if (layoutManager instanceof GridLayoutManager) {
-            if (((GridLayoutManager)layoutManager).getSpanSizeLookup().getSpanSize(position) == span){
+            int lastColumn = childCount - (childCount % span == 0 ? span : childCount % span);
+            if (position >= lastColumn){
                 return true;
             }
-            int lastColumn = childCount - childCount % span;
-            if (position >= lastColumn)// 如果是最后一行，则不需要绘制底部
-                return true;
         } else if (layoutManager instanceof StaggeredGridLayoutManager) {
             int orientation = ((StaggeredGridLayoutManager) layoutManager).getOrientation();
             if (orientation == StaggeredGridLayoutManager.VERTICAL) {
-                int lastColumn = childCount - childCount % span;
-                if (position >= lastColumn)
+                int lastColumn = childCount - (childCount % span == 0 ? span : childCount % span);
+                if (position >= lastColumn){
                     return true;
+                }
             } else  {
                 if ((position + 1) % span == 0) {
                     return true;

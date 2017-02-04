@@ -37,10 +37,10 @@ public class UserAdapter extends SimpleAdapter<User>{
         return R.layout.header_user;
     }
 
-//    @Override
-//    public int setFooterView() {
-//        return R.layout.footer_user;
-//    }
+    @Override
+    public int setFooterView() {
+        return R.layout.footer_user;
+    }
 
     @Override
     public void onBindHeaderView(View header, int position) {
@@ -53,16 +53,16 @@ public class UserAdapter extends SimpleAdapter<User>{
         });
     }
 
-//    @Override
-//    public void onBindFooterView(View footer, int position) {
-//        footer.findViewById(R.id.footer_button)
-//                .setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View v) {
-//                        Snackbar.make(v,"点击Footer上的Button",Snackbar.LENGTH_SHORT).show();
-//                    }
-//                });
-//    }
+    @Override
+    public void onBindFooterView(View footer, int position) {
+        footer.findViewById(R.id.footer_button)
+                .setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Snackbar.make(v,"点击Footer上的Button",Snackbar.LENGTH_SHORT).show();
+                    }
+                });
+    }
 
     private class UserHolder extends RecyclerView.ViewHolder{
 

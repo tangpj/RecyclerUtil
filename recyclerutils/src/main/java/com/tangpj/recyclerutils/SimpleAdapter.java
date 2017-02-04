@@ -13,7 +13,7 @@ import java.util.List;
  * @ClassName: SimpleAdapter
  * @author create by Tang
  * @date date 17/1/22 下午4:12
- * @Description: 简单的RecyclerView Adapter
+ * @Description: 简单的RecyclerView SecondaryAdapter
  * 可以简便的设置RecyclerView的header和footer
  * @param <E> 内部数据项的类型（实体类）
  */
@@ -22,8 +22,8 @@ public abstract class SimpleAdapter<E> extends RecyclerView.Adapter<RecyclerView
         implements ISimpleAdapter<E>,ICreateHeaderView,ICreateFooterView{
 
     private static final int TYPE_NORMAL = 0;
-    private static final int TYPE_HEADER = 1;
-    private static final int TYPE_FOOTER = 2;
+    public static final int TYPE_HEADER = 1;
+    public static final int TYPE_FOOTER = 2;
 
     private List<E> data;
 
@@ -216,18 +216,7 @@ public abstract class SimpleAdapter<E> extends RecyclerView.Adapter<RecyclerView
     }
 
 
-    /**
-     * @Method: Holder
-     * @author create by Tang
-     * @date date 17/1/22 下午5:55
-     * @Description: 当不需要对footer和header做任何处理时
-     * 使用该使用该Holder创建footer和header
-     */
-    public class Holder extends RecyclerView.ViewHolder{
-        public Holder(View itemView) {
-            super(itemView);
-        }
-    }
+
 
     /**
      * @ClassName: OnItemClickListenter
