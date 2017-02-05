@@ -10,7 +10,7 @@ import android.view.View;
  * @Description: 当不需要对footer和header做任何处理时
  * 使用该使用该Holder创建footer和header
  */
-public class Holder extends RecyclerView.ViewHolder{
+class Holder extends RecyclerView.ViewHolder{
     public Holder(View itemView) {
         super(itemView);
     }

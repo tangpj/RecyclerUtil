@@ -4,7 +4,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * @ClassName: ISecondaryAdapter
@@ -15,24 +14,32 @@ import java.util.Map;
 
 public interface ISecondaryAdapter<Group,Child> {
 
-    int TYPE_GROUP = 99;
-    int TYPE_CHILD = 100;
+    int SECONDARY_TYPE_GROUP = 99;
+    int SECONDARY_TYPE_CHILD = 0;
 
     RecyclerView.ViewHolder onCreateGroupHolder(ViewGroup parent);
 
     RecyclerView.ViewHolder onCreateChildHolder(ViewGroup parent);
 
-    void onBindGroupHolder(RecyclerView.ViewHolder holder, int groupPosition);
+    void onBindGroupHolder(RecyclerView.ViewHolder holder, Group group);
 
-    void onBindChildHolder(RecyclerView.ViewHolder holder, int position);
+    void onBindChildHolder(RecyclerView.ViewHolder holder, Child child);
 
     void setGroupData(List<Group> groupData);
 
+    void setGroup(int groupPosition,Group group);
+
     void setChildData(int groupPosition,List<Child> childData);
 
-    void setData(List<Group> groupData,List<Child> childData);
+    void setChild(int groupPosition,int childPosition,Child child);
+
+    void setData(List<Group> groupData,List<List<Child>> childData);
 
     void addItem(Group group,List<Child> childData);
 
     void addGroup(Group group);
+
+    void notifyGroupItem(int fromGroupIndex,int toGroupIndex);
+
+    void notifyGroupItemMove(int fromGroupIndex,int toGroupIndex);
 }

@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.tangpj.recyclerdemo.model.UserModel;
 import com.tangpj.recyclerutils.SimpleAdapter;
 
 
@@ -17,7 +18,7 @@ import com.tangpj.recyclerutils.SimpleAdapter;
  * @Description: TODO
  */
 
-public class UserAdapter extends SimpleAdapter<User>{
+public class UserAdapter extends SimpleAdapter<UserModel>{
 
     @Override
     public RecyclerView.ViewHolder onCreateNormalView(ViewGroup parent) {
@@ -26,10 +27,10 @@ public class UserAdapter extends SimpleAdapter<User>{
     }
 
     @Override
-    public void onBindNormalView(RecyclerView.ViewHolder normalHolder, int position, User value) {
-        ((UserHolder) normalHolder).name.setText(value.name);
-        ((UserHolder) normalHolder).age.setText(value.age + "");
-        ((UserHolder) normalHolder).sex.setText(value.sex);
+    public void onBindNormalView(RecyclerView.ViewHolder normalHolder, int position, UserModel value) {
+        ((UserHolder) normalHolder).name.setText(value.user.name);
+        ((UserHolder) normalHolder).age.setText(value.user.age + "");
+        ((UserHolder) normalHolder).sex.setText(value.user.sex);
     }
 
     @Override

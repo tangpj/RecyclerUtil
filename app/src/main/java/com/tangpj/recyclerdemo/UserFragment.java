@@ -1,8 +1,8 @@
 package com.tangpj.recyclerdemo;
 
-import android.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.tangpj.recyclerdemo.model.UserModel;
 import com.tangpj.recyclerutils.RecyclerViewDivider;
 
 import java.util.Arrays;
@@ -22,21 +23,21 @@ import java.util.Arrays;
  * @Description: TODO
  */
 
-public class UserFragment extends Fragment{
+public class UserFragment extends Fragment {
 
     private UserAdapter adapter;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_user,container,false);
+        View view = inflater.inflate(R.layout.fragment_list,container,false);
         init(view);
         return view;
     }
 
     private void init(View view){
 
-        RecyclerView userList = (RecyclerView) view.findViewById(R.id.fragment_user_list);
+        RecyclerView userList = (RecyclerView) view.findViewById(R.id.fragment_list);
 
         adapter = new UserAdapter();
         LinearLayoutManager lm = new LinearLayoutManager(getActivity());
@@ -44,8 +45,9 @@ public class UserFragment extends Fragment{
         StaggeredGridLayoutManager sm = new StaggeredGridLayoutManager(3,StaggeredGridLayoutManager.VERTICAL);
         userList.setLayoutManager(sm);
 
+
         userList.setAdapter(adapter);
-        adapter.setData(Arrays.asList(User.values()));
+        adapter.setData(Arrays.asList(UserModel.values()));
         userList.addItemDecoration(RecyclerViewDivider.newLinesDivider(getActivity(),16));
     }
 
