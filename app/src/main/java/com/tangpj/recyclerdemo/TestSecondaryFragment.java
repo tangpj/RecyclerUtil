@@ -13,12 +13,9 @@ import android.view.ViewGroup;
 
 import com.tangpj.recyclerdemo.bean.FriendGroupBean;
 import com.tangpj.recyclerdemo.bean.UserBean;
-import com.tangpj.recyclerdemo.model.UserModel;
-import com.tangpj.recyclerutils.RecyclerViewDivider;
-import com.tangpj.recyclerutils.SecondaryAdapter;
+import com.tangpj.recyclerutils.SimpleViewDivider;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -49,11 +46,11 @@ public class TestSecondaryFragment extends Fragment{
         adapter = new TestSecondaryAdapter();
         LinearLayoutManager lm = new LinearLayoutManager(getActivity());
         GridLayoutManager gm = new GridLayoutManager(getActivity(),3);
-        StaggeredGridLayoutManager sm = new StaggeredGridLayoutManager(3,StaggeredGridLayoutManager.VERTICAL);
+        StaggeredGridLayoutManager sm = new StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.VERTICAL);
         list.setLayoutManager(lm);
 
         list.setAdapter(adapter);
-        list.addItemDecoration(RecyclerViewDivider.newLinesDivider(getActivity(),1));
+        list.addItemDecoration(SimpleViewDivider.newLinesDivider(getActivity(),8));
 
         List<List<UserBean>> userList = new ArrayList<>();
         for (FriendGroupBean group : data){
@@ -79,8 +76,8 @@ public class TestSecondaryFragment extends Fragment{
         List<FriendGroupBean> friendGroups = new ArrayList<>();
         friendGroups.add(new FriendGroupBean("家人",family));
         friendGroups.add(new FriendGroupBean("同事",colleague));
-        friendGroups.add(new FriendGroupBean("朋友",colleague));
-        friendGroups.add(new FriendGroupBean("同学",null));
+        friendGroups.add(new FriendGroupBean("朋友",friend));
+        friendGroups.add(new FriendGroupBean("同学",new ArrayList<UserBean>()));
         return friendGroups;
     }
 }

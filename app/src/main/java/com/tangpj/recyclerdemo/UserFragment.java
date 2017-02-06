@@ -12,7 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.tangpj.recyclerdemo.model.UserModel;
-import com.tangpj.recyclerutils.RecyclerViewDivider;
+import com.tangpj.recyclerutils.SimpleViewDivider;
 
 import java.util.Arrays;
 
@@ -42,13 +42,13 @@ public class UserFragment extends Fragment {
         adapter = new UserAdapter();
         LinearLayoutManager lm = new LinearLayoutManager(getActivity());
         GridLayoutManager gm = new GridLayoutManager(getActivity(),3);
-        StaggeredGridLayoutManager sm = new StaggeredGridLayoutManager(3,StaggeredGridLayoutManager.VERTICAL);
+        StaggeredGridLayoutManager sm = new StaggeredGridLayoutManager(4,StaggeredGridLayoutManager.VERTICAL);
         userList.setLayoutManager(sm);
 
 
         userList.setAdapter(adapter);
         adapter.setData(Arrays.asList(UserModel.values()));
-        userList.addItemDecoration(RecyclerViewDivider.newLinesDivider(getActivity(),16));
+        userList.addItemDecoration(SimpleViewDivider.newLinesDivider(getActivity(),16));
     }
 
 

@@ -14,15 +14,19 @@ import android.util.TypedValue;
 import android.view.View;
 
 /**
- * @ClassName: RecyclerViewDivider
+ * @ClassName: SimpleViewDivider
  * @author create by Tang
  * @date date 17/1/23 下午3:53
- * @Description: RecyclerView分割线
+ * @Description: 简单的RecyclerView分割线
+ * 不适用于自定义LayoutManger和特殊布局的Adapter等
+ * 仅支持LinearLayoutManager、GridLayoutManager、StaggeredLayoutManager
+ * 当添加了header和footer时，在LinearLayoutManager和StaggeredLayoutManager的横向模式时
+ * 显示会有问题，所以使用这两种模式不建议添加header和footer
  */
 
-public class RecyclerViewDivider extends RecyclerView.ItemDecoration{
+public class SimpleViewDivider extends RecyclerView.ItemDecoration{
 
-    private static final String TAG = "RecyclerViewDivider";
+    private static final String TAG = "SimpleViewDivider";
 
 
     //间隔
@@ -33,7 +37,8 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration{
     private int recoupResidue;
     //用来计算item间分割线的偏移系数
     private int intervalOffset;
-    //
+    //主要用来记录header或SecondaryAdapter中的Group
+    private int fullSpanViewIndex = 0;
 
     private static DividerStyle style;
     private Drawable mDivider;
@@ -53,7 +58,7 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration{
         TRANSPARENT
     }
 
-    private RecyclerViewDivider(Context context, float interval){
+    private SimpleViewDivider(Context context, float interval){
         this.interval = (int) TypedValue.applyDimension(
                 TypedValue.COMPLEX_UNIT_DIP,interval,context.getResources().getDisplayMetrics());
         if (style == DividerStyle.LINES){
@@ -73,7 +78,7 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration{
      * @Description: 创建透明分割线
      * 默认宽度为16dp
      */
-    public static RecyclerViewDivider newTransparentDivider(Context context){
+    public static SimpleViewDivider newTransparentDivider(Context context){
         return newTransparentDivider(context,16);
     }
 
@@ -85,9 +90,9 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration{
      * @param interval 分割线宽度
      *                 单位为dp
      */
-    public static RecyclerViewDivider newTransparentDivider(Context context, float interval){
+    public static SimpleViewDivider newTransparentDivider(Context context, float interval){
         style = DividerStyle.TRANSPARENT;
-        return new RecyclerViewDivider(context,interval);
+        return new SimpleViewDivider(context,interval);
     }
 
     /**
@@ -97,7 +102,7 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration{
      * @Description: 创建不透明分割线
      * 默认宽度为1dp
      */
-    public static RecyclerViewDivider newLinesDivider(Context context){
+    public static SimpleViewDivider newLinesDivider(Context context){
         return newLinesDivider(context,1);
     }
 
@@ -110,9 +115,9 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration{
      *                 单位为dp
      *
      */
-    public static RecyclerViewDivider newLinesDivider(Context context,int interval){
+    public static SimpleViewDivider newLinesDivider(Context context, int interval){
         style = DividerStyle.LINES;
-        return new RecyclerViewDivider(context,interval);
+        return new SimpleViewDivider(context,interval);
     }
 
     @Override
@@ -143,18 +148,14 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration{
         int span;
         int position;
         RecyclerView.LayoutManager layoutManager = parent.getLayoutManager();
-        RecyclerView.Adapter adapter = parent.getAdapter();
+        position = layoutManager.getPosition(view);
         if (layoutManager.getItemViewType(view) == SimpleAdapter.TYPE_HEADER){
             outRect.set(0, 0, 0, interval);
+            fullSpanViewIndex = position ;
             return;
         }
         if (layoutManager.getItemViewType(view) == SimpleAdapter.TYPE_FOOTER){
             return;
-        }
-        if (adapter.getItemViewType(0) != 0){
-            position = layoutManager.getPosition(view) - 1;
-        }else {
-            position = layoutManager.getPosition(view);
         }
 
 
@@ -199,25 +200,32 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration{
     }
 
     private void outGridVerticalRect(Rect outRect,RecyclerView parent,int position,int spanCount,int childCount){
-        if (isFirstColumn(parent,position,spanCount,childCount)){
-            outRect.set(0, 0, interval - recoupInterval, interval);
-            intervalOffset = 1;
 
+        if (isFirstColumn(parent,position,spanCount,childCount)){
+            intervalOffset = 1;
+//            Log.d(TAG, "outGridVerticalRect: isFirstColumn = " + position);
+            outRect.set(0, 0, interval - recoupInterval, interval);
         }else if (isLastColumn(parent, position, spanCount, childCount)) {
             outRect.set(interval - (recoupInterval + recoupResidue),
                     0,
                     0,
                     interval);
+//            Log.d(TAG, "outGridVerticalRect: isLastColumn = " + position);
         }else if (isLastRaw(parent, position, spanCount, childCount)) {
             outRect.set(recoupInterval * (intervalOffset - 1)
                     , 0
                     , interval - recoupInterval * intervalOffset
                     , interval);
+//            Log.d(TAG, "outGridVerticalRect: isLastRaw = " + position);
+
+
         } else {
             outRect.set(recoupInterval * (intervalOffset - 1)
                     , 0
                     , interval - recoupInterval * intervalOffset
                     , interval);
+//            Log.d(TAG, "outGridVerticalRect: normal = " + position);
+
         }
         intervalOffset++;
     }
@@ -293,14 +301,15 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration{
         if (position == 0){
             return true;
         }
+
         if (layoutManager instanceof GridLayoutManager){
-            if (((position + 1) % span) == 1){
+            if (((position - fullSpanViewIndex ) % span) == 1){
                 return true;
             }
         }else if (layoutManager instanceof StaggeredGridLayoutManager){
             int orientation = ((StaggeredGridLayoutManager)layoutManager).getOrientation();
             if (orientation == StaggeredGridLayoutManager.VERTICAL){
-                if (((position + 1) % span) == 1){
+                if (((position - fullSpanViewIndex ) % span) == 1){
                     return true;
                 }
             }else {
@@ -322,13 +331,13 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration{
         RecyclerView.LayoutManager layoutManager = parent.getLayoutManager();
         if (layoutManager instanceof GridLayoutManager ){
 
-            if ((position + 1) % span == 0){
+            if (((position - fullSpanViewIndex ) % span) == 0){
                 return true;
             }
         }else if (layoutManager instanceof StaggeredGridLayoutManager){
             int orientation = ((StaggeredGridLayoutManager) layoutManager).getOrientation();
             if (orientation == StaggeredGridLayoutManager.VERTICAL){
-                if ((position + 1) % span == 0){
+                if (((position - fullSpanViewIndex ) % span) == 0){
                     return true;
                 }
             }else {
@@ -362,7 +371,7 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration{
             int orientation = ((StaggeredGridLayoutManager) layoutManager).getOrientation();
             if (orientation == StaggeredGridLayoutManager.VERTICAL) {
                 int lastColumn = childCount - (childCount % span == 0 ? span : childCount % span);
-                if (position >= lastColumn){
+                if (position > lastColumn){
                     return true;
                 }
             } else  {

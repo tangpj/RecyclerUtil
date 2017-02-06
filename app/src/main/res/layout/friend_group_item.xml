@@ -3,10 +3,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/title"
     android:layout_width="match_parent"
-    android:layout_height="32dp"
+    android:layout_height="48dp"
     android:gravity="center_vertical"
+    android:background="@color/colorPrimary"
+    android:textColor="#fff"
     android:paddingLeft="16dp"
-    android:background="#fff"
     tools:text="家人">
 
 </TextView>

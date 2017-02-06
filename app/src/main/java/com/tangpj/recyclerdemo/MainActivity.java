@@ -1,9 +1,13 @@
 package com.tangpj.recyclerdemo;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -22,6 +26,8 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
 
     private FragmentTransaction fragmentTransaction;
+    private DrawerLayout drawerLayout;
+    private NavigationView navigationView;
 
 
 
@@ -31,6 +37,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        drawerLayout = (DrawerLayout) findViewById(R.id.main_drawer_layout);
+        navigationView = (NavigationView) findViewById(R.id.main_navigation);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -46,8 +55,30 @@ public class MainActivity extends AppCompatActivity {
         fragmentTransaction.replace(R.id.main_fragment_layout,new TestSecondaryFragment())
                 .commit();
 
-
-//        String gson = new Gson().toJson(friendGroups);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                fragmentTransaction = getSupportFragmentManager()
+                        .beginTransaction();
+                switch (item.getItemId()){
+                    case R.id.simple_adapter:
+                        fragmentTransaction
+                                .replace(R.id.main_fragment_layout,new UserFragment())
+                                .commit();
+                        break;
+                    case R.id.secondary_adapter:
+                        fragmentTransaction
+                                .replace(R.id.main_fragment_layout,new TestSecondaryFragment())
+                                .commit();
+                        break;
+                }
+                item.setChecked(true);
+                drawerLayout.closeDrawers();
+                return true;
+            }
+        });
+        navigationView.getMenu().getItem(0).setChecked(true);
     }
 
     @Override
@@ -66,6 +97,11 @@ public class MainActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            return true;
+        }
+
+        if (id == android.R.id.home){
+            drawerLayout.openDrawer(GravityCompat.START);
             return true;
         }
 

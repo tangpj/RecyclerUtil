@@ -14,7 +14,7 @@ import java.util.List;
 
 public interface ISecondaryAdapter<Group,Child> {
 
-    int SECONDARY_TYPE_GROUP = 99;
+    int SECONDARY_TYPE_GROUP = 1;
     int SECONDARY_TYPE_CHILD = 0;
 
     RecyclerView.ViewHolder onCreateGroupHolder(ViewGroup parent);

@@ -1,6 +1,8 @@
 package com.tangpj.recyclerutils;
 
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.Log;
 import android.view.ViewGroup;
 
@@ -42,9 +44,44 @@ public abstract class SecondaryAdapter<Group,Child> extends RecyclerView.Adapter
             return;
         }
         int groupIndex = getGroupIndex(position);
-        onBindChildHolder(holder,childData.get(groupIndex).get(getChildIndex(groupIndex,position)));
+        List<Child> childes = childData.get(groupIndex);
+        if (childes != null){
+            onBindChildHolder(holder,childes.get(getChildIndex(groupIndex,position)));
+
+        }
     }
-//
+
+    @Override
+    public void onAttachedToRecyclerView(RecyclerView recyclerView) {
+        super.onAttachedToRecyclerView(recyclerView);
+        RecyclerView.LayoutManager lm = recyclerView.getLayoutManager();
+        if(lm instanceof GridLayoutManager){
+            final GridLayoutManager gridLayoutManager = (GridLayoutManager) lm;
+            gridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
+                @Override
+                public int getSpanSize(int position) {
+                    if (getItemViewType(position) == SECONDARY_TYPE_GROUP ){
+                        return gridLayoutManager.getSpanCount();
+                    }
+                    return 1;
+                }
+            });
+        }
+    }
+
+    @Override
+    public void onViewAttachedToWindow(RecyclerView.ViewHolder holder) {
+        super.onViewAttachedToWindow(holder);
+        ViewGroup.LayoutParams lp = holder.itemView.getLayoutParams();
+        if (lp != null && lp instanceof StaggeredGridLayoutManager.LayoutParams){
+            StaggeredGridLayoutManager.LayoutParams layoutParams
+                    = (StaggeredGridLayoutManager.LayoutParams) lp;
+            layoutParams.setFullSpan(getItemViewType(holder.getLayoutPosition()) == SECONDARY_TYPE_GROUP);
+        }
+    }
+
+
+    //
 //    @Override
 //    public RecyclerView.ViewHolder onCreateGroupHolder(ViewGroup parent) {
 //        return null;
@@ -75,7 +112,6 @@ public abstract class SecondaryAdapter<Group,Child> extends RecyclerView.Adapter
             if (groupPositions.size() < groupData.size()){
                 groupPositions.add(childCount + i);
             }
-            Log.d(TAG, "getItemCount: group index = " + groupPositions.get(i));
             List<Child> child = childData.get(i);
             childCount += child == null ? 0 : child.size();
         }
@@ -265,21 +301,26 @@ public abstract class SecondaryAdapter<Group,Child> extends RecyclerView.Adapter
                     + "position: " + position + ", Item count: " + getItemCount());
         }
         for (int i = 0; i < groupPositions.size(); i++){
-            if (groupPositions.get(i) >= position){
+            if (i >= groupPositions.size() - 1){
                 return i;
-
+            }
+            if (groupPositions.get(i + 1) > position){
+                return i;
             }
         }
         return -1;
     }
 
     private int getChildIndex(int groupIndex,int position){
-        return position - this.groupPositions.get(groupIndex) - 1;
+        return position - (this.groupPositions.get(groupIndex)) - 1;
     }
 
     private String outOfBoundsMsg(int index,int size) {
         return "Index: " + index + ", Size: "+  size;
     }
 
+    public List<Integer> getGroupPositions(){
+        return groupPositions;
+    }
 
 }

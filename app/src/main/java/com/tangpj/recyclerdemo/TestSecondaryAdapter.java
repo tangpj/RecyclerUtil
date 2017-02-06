@@ -36,12 +36,14 @@ public class TestSecondaryAdapter extends SecondaryAdapter<FriendGroupBean,UserB
 
     @Override
     public void onBindGroupHolder(RecyclerView.ViewHolder holder, FriendGroupBean friendGroupBean) {
-
+        ((TitleHolder)holder).groupName.setText(friendGroupBean.title);
     }
 
     @Override
     public void onBindChildHolder(RecyclerView.ViewHolder holder, UserBean userBean) {
-
+        ((FriendHolder) holder).name.setText(userBean.name);
+        ((FriendHolder) holder).age.setText(userBean.age + "");
+        ((FriendHolder) holder).sex.setText(userBean.sex);
     }
 
     private class TitleHolder extends RecyclerView.ViewHolder{

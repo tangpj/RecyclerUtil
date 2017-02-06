@@ -10,7 +10,6 @@ import com.tangpj.recyclerdemo.bean.UserBean;
  */
 
 public enum UserModel {
-    USER0(new UserBean("USER0",16)),
     USER1(new UserBean("USER1",16)),
     USER2(new UserBean("USER2",16)),
     USER3(new UserBean("USER3",16)),
@@ -24,6 +23,7 @@ public enum UserModel {
     USER11(new UserBean("USER11",16)),
     USER12(new UserBean("USER12",16)),
     USER13(new UserBean("USER13",16)),
+    USER14(new UserBean("USER14",16)),
 //    USER14("USER14",16),
 //    USER15("USER15",16),
     ;
