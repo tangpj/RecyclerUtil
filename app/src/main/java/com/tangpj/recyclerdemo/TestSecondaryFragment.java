@@ -13,7 +13,7 @@ import android.view.ViewGroup;
 
 import com.tangpj.recyclerdemo.bean.FriendGroupBean;
 import com.tangpj.recyclerdemo.bean.UserBean;
-import com.tangpj.recyclerutils.SimpleViewDivider;
+import com.tangpj.recyclerutils.divider.SimpleViewDivider;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,7 +50,8 @@ public class TestSecondaryFragment extends Fragment{
         list.setLayoutManager(lm);
 
         list.setAdapter(adapter);
-        list.addItemDecoration(SimpleViewDivider.newLinesDivider(getActivity(),8));
+        SimpleViewDivider divider = SimpleViewDivider.newTransparentDivider(getActivity(),8);
+        list.addItemDecoration(divider);
 
         List<List<UserBean>> userList = new ArrayList<>();
         for (FriendGroupBean group : data){
@@ -58,7 +59,6 @@ public class TestSecondaryFragment extends Fragment{
         }
         adapter.setData(data,userList);
     }
-
 
     private List initData(){
         List<UserBean> family = new ArrayList<>();
@@ -76,8 +76,8 @@ public class TestSecondaryFragment extends Fragment{
         List<FriendGroupBean> friendGroups = new ArrayList<>();
         friendGroups.add(new FriendGroupBean("家人",family));
         friendGroups.add(new FriendGroupBean("同事",colleague));
-        friendGroups.add(new FriendGroupBean("朋友",friend));
-        friendGroups.add(new FriendGroupBean("同学",new ArrayList<UserBean>()));
+        friendGroups.add(new FriendGroupBean("朋友",null));
+        friendGroups.add(new FriendGroupBean("同学",friend));
         return friendGroups;
     }
 }

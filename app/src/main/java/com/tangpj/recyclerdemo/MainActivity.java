@@ -52,10 +52,11 @@ public class MainActivity extends AppCompatActivity {
 
         fragmentTransaction = getSupportFragmentManager()
                 .beginTransaction();
-        fragmentTransaction.replace(R.id.main_fragment_layout,new TestSecondaryFragment())
+        fragmentTransaction.replace(R.id.main_fragment_layout,new UserFragment())
                 .commit();
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeAsUpIndicator(R.mipmap.main_nav_img);
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {

@@ -1,17 +1,24 @@
-package com.tangpj.recyclerutils;
+package com.tangpj.recyclerutils.divider;
 
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
+import android.support.annotation.DrawableRes;
+import android.support.annotation.IntDef;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
+
+import com.tangpj.recyclerutils.SimpleAdapter;
+
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 
 /**
  * @ClassName: SimpleViewDivider
@@ -28,6 +35,8 @@ public class SimpleViewDivider extends RecyclerView.ItemDecoration{
 
     private static final String TAG = "SimpleViewDivider";
 
+    private static final int STYLE_LINES = 0;
+    private static final int STYLE_TRANSPARENT = 1;
 
     //间隔
     private int interval;
@@ -40,35 +49,54 @@ public class SimpleViewDivider extends RecyclerView.ItemDecoration{
     //主要用来记录header或SecondaryAdapter中的Group
     private int fullSpanViewIndex = 0;
 
-    private static DividerStyle style;
     private Drawable mDivider;
     private static final int[] ATTRS = new int[] {android.R.attr.listDivider};
 
 
     /**
-     * @ClassName: DividerType
+     * @ClassName: DividerStyle
      * @author create by Tang
      * @date date 17/1/23 下午4:15
      * @Description: 分割线的样式
      */
-    public enum DividerStyle{
-        //线条
-        LINES,
-        //透明
-        TRANSPARENT
+    @IntDef({STYLE_LINES,STYLE_TRANSPARENT})
+    @Retention(RetentionPolicy.SOURCE)
+    private @interface DividerStyle {
+
     }
 
+    @DividerStyle
+    private int style;
+
+
+
+    /**
+     * @Method: SimpleViewDivider
+     * @author create by Tang
+     * @date date 17/2/7 上午11:36
+     * @Description: 创建透明分割线时调用该私有构造方法
+     * @param interval 分割线宽度，单位dp
+     */
     private SimpleViewDivider(Context context, float interval){
+        style = STYLE_TRANSPARENT;
         this.interval = (int) TypedValue.applyDimension(
                 TypedValue.COMPLEX_UNIT_DIP,interval,context.getResources().getDisplayMetrics());
-        if (style == DividerStyle.LINES){
-            final TypedArray a = context.obtainStyledAttributes(ATTRS);
-            mDivider = a.getDrawable(0);
-            a.recycle();
-        }
-
     }
 
+    /**
+     * @Method: SimpleViewDivider
+     * @author create by Tang
+     * @date date 17/2/7 上午11:37
+     * @Description: 创建不透明分割线时调用该私有构造方法
+     * @param interval 分割线宽度，单位dp
+     * @param divider 分割线所采用的图片
+     */
+    private SimpleViewDivider(Context context,float interval,Drawable divider){
+        style = STYLE_LINES;
+        mDivider = divider;
+        this.interval = (int) TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP,interval,context.getResources().getDisplayMetrics());
+    }
 
 
     /**
@@ -91,7 +119,6 @@ public class SimpleViewDivider extends RecyclerView.ItemDecoration{
      *                 单位为dp
      */
     public static SimpleViewDivider newTransparentDivider(Context context, float interval){
-        style = DividerStyle.TRANSPARENT;
         return new SimpleViewDivider(context,interval);
     }
 
@@ -104,6 +131,7 @@ public class SimpleViewDivider extends RecyclerView.ItemDecoration{
      */
     public static SimpleViewDivider newLinesDivider(Context context){
         return newLinesDivider(context,1);
+
     }
 
     /**
@@ -116,14 +144,25 @@ public class SimpleViewDivider extends RecyclerView.ItemDecoration{
      *
      */
     public static SimpleViewDivider newLinesDivider(Context context, int interval){
-        style = DividerStyle.LINES;
-        return new SimpleViewDivider(context,interval);
+        final TypedArray a = context.obtainStyledAttributes(ATTRS);
+        Drawable defaultDivider = a.getDrawable(0);
+        a.recycle();
+        return newLinesDivider(context,interval,defaultDivider);
+    }
+
+    public static SimpleViewDivider newLinesDivider(Context context, int interval ,@DrawableRes int drawableId){
+        Drawable divider = ContextCompat.getDrawable(context,drawableId);
+        return newLinesDivider(context,interval,divider);
+    }
+
+    private static SimpleViewDivider newLinesDivider(Context context,int interval,Drawable drawable){
+        return new SimpleViewDivider(context,interval,drawable);
     }
 
     @Override
     public void onDraw(Canvas c, RecyclerView parent, RecyclerView.State state) {
         super.onDraw(c, parent, state);
-        if (style == DividerStyle.LINES){
+        if (style == STYLE_LINES){
             RecyclerView.LayoutManager lm = parent.getLayoutManager();
             if (lm instanceof GridLayoutManager){
                 drawVertical(c,parent);
@@ -200,7 +239,10 @@ public class SimpleViewDivider extends RecyclerView.ItemDecoration{
     }
 
     private void outGridVerticalRect(Rect outRect,RecyclerView parent,int position,int spanCount,int childCount){
-
+        if (style == STYLE_TRANSPARENT){
+            outTransparentVerticalRect(outRect,parent,position,spanCount,childCount);
+            return;
+        }
         if (isFirstColumn(parent,position,spanCount,childCount)){
             intervalOffset = 1;
 //            Log.d(TAG, "outGridVerticalRect: isFirstColumn = " + position);
@@ -228,6 +270,34 @@ public class SimpleViewDivider extends RecyclerView.ItemDecoration{
 
         }
         intervalOffset++;
+    }
+
+    private void outTransparentVerticalRect(Rect outRect,RecyclerView parent,int position,int spanCount,int childCount){
+        if (isFirstColumn(parent,position,spanCount,childCount)){
+//            Log.d(TAG, "outGridVerticalRect: isFirstColumn = " + position);
+            outRect.set(interval / 2, 0, interval - interval / 2, interval);
+        }else if (isLastColumn(parent, position, spanCount, childCount)) {
+            outRect.set(interval / 2,
+                    0,
+                    interval / 2,
+                    interval);
+//            Log.d(TAG, "outGridVerticalRect: isLastColumn = " + position);
+        }else if (isLastRaw(parent, position, spanCount, childCount)) {
+            outRect.set(interval / 2
+                    , 0
+                    , interval / 2
+                    , interval);
+//            Log.d(TAG, "outGridVerticalRect: isLastRaw = " + position);
+
+
+        } else {
+            outRect.set(interval / 2
+                    , 0
+                    , interval / 2
+                    , interval);
+//            Log.d(TAG, "outGridVerticalRect: normal = " + position);
+
+        }
     }
 
     private void outGridHorizontalRect(Rect outRect,RecyclerView parent,int position,int spanCount,int childCount){

@@ -3,8 +3,9 @@ package com.tangpj.recyclerutils;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
-import android.util.Log;
 import android.view.ViewGroup;
+
+import com.tangpj.recyclerutils.internal.ISecondaryAdapter;
 
 import java.util.ArrayList;
 import java.util.List;

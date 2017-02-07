@@ -7,6 +7,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.tangpj.recyclerutils.internal.ICreateFooterView;
+import com.tangpj.recyclerutils.internal.ICreateHeaderView;
+import com.tangpj.recyclerutils.internal.ISimpleAdapter;
+
 import java.util.List;
 
 /**
@@ -19,7 +23,7 @@ import java.util.List;
  */
 
 public abstract class SimpleAdapter<E> extends RecyclerView.Adapter<RecyclerView.ViewHolder>
-        implements ISimpleAdapter<E>,ICreateHeaderView,ICreateFooterView{
+        implements ISimpleAdapter<E>,ICreateHeaderView,ICreateFooterView {
 
     private static final int TYPE_NORMAL = 0;
     public static final int TYPE_HEADER = 1;
