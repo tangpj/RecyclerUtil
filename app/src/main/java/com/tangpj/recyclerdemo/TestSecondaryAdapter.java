@@ -44,9 +44,15 @@ public class TestSecondaryAdapter extends SecondaryAdapter<FriendGroupBean,UserB
         ((FriendHolder) holder).name.setText(userBean.name);
         ((FriendHolder) holder).age.setText(userBean.age + "");
         ((FriendHolder) holder).sex.setText(userBean.sex);
+        if (userBean.imgId != 0){
+            ((FriendHolder) holder).avatar.setImageResource(userBean.imgId);
+        }else {
+            ((FriendHolder) holder).avatar.setImageResource(R.mipmap.ic_launcher);
+
+        }
     }
 
-    private class TitleHolder extends RecyclerView.ViewHolder{
+    public static class TitleHolder extends RecyclerView.ViewHolder{
 
         TextView groupName;
 

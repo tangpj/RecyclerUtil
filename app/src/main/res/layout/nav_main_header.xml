@@ -1,17 +1,230 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="128dp"
-    android:background="@color/colorPrimary"
-    android:fitsSystemWindows="true">
+<android.support.v4.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/windowsColorLight">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:layout_marginLeft="32dp"
-        android:textSize="22sp"
-        android:textColor="#ffffff"
-        android:text="@string/app_name"/>
+    <LinearLayout
+        android:orientation="vertical" android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true">
 
-</FrameLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@color/colorPrimary">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="32dp"
+                android:textSize="22sp"
+                android:textColor="#ffffff"
+                android:text="分割线宽度控制"/>
+
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
+                android:padding="8dp">
+
+                <EditText
+                    android:id="@+id/input.interval"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/windowsColorLight"
+                    android:inputType="number"
+                    android:hint="请输入分割线宽度"/>
+
+            </android.support.design.widget.TextInputLayout>
+
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
+                android:padding="8dp">
+
+                <EditText
+                    android:id="@+id/input.span"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/windowsColorLight"
+                    android:inputType="number"
+                    android:hint="请输入表格span值"/>
+
+            </android.support.design.widget.TextInputLayout>
+
+
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:onClick="resetValue"
+                android:text="确认重设"/>
+
+
+
+        </LinearLayout>
+
+
+
+        <RadioGroup
+            android:id="@+id/group.adapter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp">
+
+            <RadioButton
+                android:id="@+id/simple.adapter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:text="Simple Adapter"/>
+
+            <RadioButton
+                android:id="@+id/secondary.adapter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Secondary Adapter"/>
+
+        </RadioGroup>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.1dp"
+            android:layout_marginTop="8dp"
+            android:background="@color/linesColor"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginLeft="8dp"
+            android:text="LayoutManager"/>
+
+        <RadioGroup
+            android:id="@+id/group.layout.manager"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="8dp">
+
+            <RadioButton
+                android:id="@+id/radio.layout.linear"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:text="LinearLayoutManager"/>
+
+            <RadioButton
+                android:id="@+id/radio.layout.grid"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="GridLayoutManager"/>
+
+            <RadioButton
+                android:id="@+id/radio.layout.staggered"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="StaggeredGridLayoutManager"/>
+
+
+        </RadioGroup>
+
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.1dp"
+            android:layout_marginTop="8dp"
+            android:background="@color/linesColor"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginLeft="8dp"
+            android:text="分割线样式"/>
+
+        <RadioGroup
+            android:id="@+id/group.divider"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="8dp">
+
+            <RadioButton
+                android:id="@+id/radio.divider.lines"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:text="线条"/>
+
+            <RadioButton
+                android:id="@+id/radio.divider.transparent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="透明"/>
+
+            <RadioButton
+                android:id="@+id/radio.divider.my"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="自定义图片分割线"/>
+
+            <RadioButton
+                android:id="@+id/radio.divider.ic"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="呵呵分割线"/>
+
+
+
+        </RadioGroup>
+
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.1dp"
+            android:layout_marginTop="8dp"
+            android:background="@color/linesColor"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginLeft="8dp"
+            android:text="方向"/>
+
+        <RadioGroup
+            android:id="@+id/group.orientation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="8dp">
+
+            <RadioButton
+                android:id="@+id/radio.orientation.horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:text="垂直"/>
+
+            <RadioButton
+                android:id="@+id/radio.orientation.vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="横向"/>
+
+
+        </RadioGroup>
+    </LinearLayout>
+
+</android.support.v4.widget.NestedScrollView>

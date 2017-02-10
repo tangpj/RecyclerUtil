@@ -12,13 +12,13 @@ import com.tangpj.recyclerutils.SimpleAdapter;
 
 
 /**
- * @ClassName: UserAdapter
+ * @ClassName: TestSimpleAdapter
  * @author create by Tang
  * @date date 17/1/23 上午11:57
  * @Description: TODO
  */
 
-public class UserAdapter extends SimpleAdapter<UserModel>{
+public class TestSimpleAdapter extends SimpleAdapter<UserModel>{
 
     @Override
     public RecyclerView.ViewHolder onCreateNormalView(ViewGroup parent) {

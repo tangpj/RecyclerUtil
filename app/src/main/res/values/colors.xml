@@ -8,4 +8,6 @@
     <color name="windowsColor">#F8F7F6</color>
     <color name="windowsColorDark">#EFEFEF</color>
     <color name="windowsColorBlack">#000</color>
+
+    <color name="linesColor">#C4C4C4</color>
 </resources>

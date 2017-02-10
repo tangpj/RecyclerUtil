@@ -82,27 +82,6 @@ public abstract class SecondaryAdapter<Group,Child> extends RecyclerView.Adapter
     }
 
 
-    //
-//    @Override
-//    public RecyclerView.ViewHolder onCreateGroupHolder(ViewGroup parent) {
-//        return null;
-//    }
-//
-//    @Override
-//    public RecyclerView.ViewHolder onCreateChildHolder(ViewGroup parent) {
-//        return null;
-//    }
-//
-//    @Override
-//    public void onBindGroupHolder(RecyclerView.ViewHolder holder, Group group) {
-//
-//    }
-//
-//    @Override
-//    public void onBindChildHolder(RecyclerView.ViewHolder holder, Child child){
-//
-//    }
-
     @Override
     public int getItemCount() {
         if (groupData == null){
@@ -241,6 +220,17 @@ public abstract class SecondaryAdapter<Group,Child> extends RecyclerView.Adapter
     public void addGroup(Group group) {
         groupData.add(group);
         notifyItemChanged(getGroupPosition(groupData.size() - 1));
+    }
+
+
+    @Override
+    public List<Group> getGroupData() {
+        return groupData;
+    }
+
+    @Override
+    public List<List<Child>> getChildData() {
+        return childData;
     }
 
     /**

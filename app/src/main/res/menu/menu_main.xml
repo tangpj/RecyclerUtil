@@ -2,9 +2,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.tangpj.recyclerdemo.MainActivity">
+
     <item
         android:id="@+id/action_settings"
         android:orderInCategory="100"
         android:title="@string/action_settings"
-        app:showAsAction="never" />
+        android:checkable="true"
+        app:showAsAction="never"
+
+        app:actionViewClass="android.widget.RadioButton"/>
+
 </menu>

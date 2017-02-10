@@ -3,17 +3,15 @@ package com.tangpj.recyclerdemo;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.tangpj.recyclerdemo.bean.FriendGroupBean;
 import com.tangpj.recyclerdemo.bean.UserBean;
-import com.tangpj.recyclerutils.divider.SimpleViewDivider;
+import com.tangpj.recyclerutils.divider.SimpleDecoration;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,8 +24,12 @@ import java.util.List;
  */
 public class TestSecondaryFragment extends Fragment{
 
+    private RecyclerView list;
     private TestSecondaryAdapter adapter;
     private List<FriendGroupBean> data;
+
+    private RecyclerView.LayoutManager lm;
+    private RecyclerView.ItemDecoration decoration;
 
 
     @Nullable
@@ -41,17 +43,21 @@ public class TestSecondaryFragment extends Fragment{
 
     private void init(View view){
 
-        RecyclerView list = (RecyclerView) view.findViewById(R.id.fragment_list);
+        list = (RecyclerView) view.findViewById(R.id.fragment_list);
 
         adapter = new TestSecondaryAdapter();
-        LinearLayoutManager lm = new LinearLayoutManager(getActivity());
-        GridLayoutManager gm = new GridLayoutManager(getActivity(),3);
-        StaggeredGridLayoutManager sm = new StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.VERTICAL);
-        list.setLayoutManager(lm);
+        lm = new LinearLayoutManager(getActivity());
+        if (decoration == null){
+            decoration = SimpleDecoration.newLinesDivider(getActivity());
+
+        }
+
+        if (list.getLayoutManager() == null){
+            list.setLayoutManager(lm);
+        }
 
         list.setAdapter(adapter);
-        SimpleViewDivider divider = SimpleViewDivider.newTransparentDivider(getActivity(),8);
-        list.addItemDecoration(divider);
+        list.addItemDecoration(decoration);
 
         List<List<UserBean>> userList = new ArrayList<>();
         for (FriendGroupBean group : data){
@@ -64,20 +70,44 @@ public class TestSecondaryFragment extends Fragment{
         List<UserBean> family = new ArrayList<>();
         List<UserBean> colleague = new ArrayList<>();
         List<UserBean> friend = new ArrayList<>();
-        family.add(new UserBean("爸爸",55,0));
-        family.add(new UserBean("妈妈",50,0));
+        family.add(new UserBean("爸爸",48,0));
+        family.add(new UserBean("妈妈",45,0));
         family.add(new UserBean("姐姐",25,0));
+        family.add(new UserBean("爷爷",67,0));
+        family.add(new UserBean("奶奶",65,0));
+        family.add(new UserBean("弟弟",16,0));
+        family.add(new UserBean("妹妹",15,0));
         colleague.add(new UserBean("小涨",25,0));
         colleague.add(new UserBean("小李",25,0));
+        colleague.add(new UserBean("小名",25,0));
+        colleague.add(new UserBean("张校长",25,0));
+        colleague.add(new UserBean("章子怡",25,0));
+        colleague.add(new UserBean("周杰伦",25,0));
         colleague.add(new UserBean("小丽",25,0));
-        friend.add(new UserBean("大红",25,0));
+        friend.add(new UserBean("大红",25,R.drawable.my_divider));
         friend.add(new UserBean("大明",24,0));
         friend.add(new UserBean("大头",25,0));
         List<FriendGroupBean> friendGroups = new ArrayList<>();
         friendGroups.add(new FriendGroupBean("家人",family));
         friendGroups.add(new FriendGroupBean("同事",colleague));
-        friendGroups.add(new FriendGroupBean("朋友",null));
-        friendGroups.add(new FriendGroupBean("同学",friend));
+        friendGroups.add(new FriendGroupBean("朋友",friend));
+        friendGroups.add(new FriendGroupBean("同学",null));
         return friendGroups;
+    }
+
+    public void setLayoutManager(RecyclerView.LayoutManager layoutManager){
+        if (list != null){
+            list.setLayoutManager(layoutManager);
+            list.setAdapter(adapter);
+        }
+        this.lm = layoutManager;
+    }
+
+    public void setDivider(RecyclerView.ItemDecoration decoration){
+        if (list != null){
+            list.removeItemDecoration(this.decoration);
+            list.addItemDecoration(decoration);
+        }
+        this.decoration = decoration;
     }
 }

@@ -39,6 +39,10 @@ public interface ISecondaryAdapter<Group,Child> {
 
     void addGroup(Group group);
 
+    List<Group> getGroupData();
+
+    List<List<Child>> getChildData();
+
     void notifyGroupItem(int fromGroupIndex,int toGroupIndex);
 
     void notifyGroupItemMove(int fromGroupIndex,int toGroupIndex);

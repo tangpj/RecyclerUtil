@@ -183,19 +183,21 @@ public abstract class SimpleAdapter<E> extends RecyclerView.Adapter<RecyclerView
     @Override
     public void onAttachedToRecyclerView(RecyclerView recyclerView) {
         super.onAttachedToRecyclerView(recyclerView);
-        RecyclerView.LayoutManager lm = recyclerView.getLayoutManager();
-        if(lm instanceof GridLayoutManager){
-            final GridLayoutManager gridLayoutManager = (GridLayoutManager) lm;
+        RecyclerView.LayoutManager layoutManager = recyclerView.getLayoutManager();
+        if (layoutManager instanceof GridLayoutManager){
+            final GridLayoutManager gridLayoutManager = (GridLayoutManager) layoutManager;
             gridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
                 @Override
                 public int getSpanSize(int position) {
-                    if (getItemViewType(position) == TYPE_HEADER ||
-                            getItemViewType(position) == TYPE_FOOTER){
+                    if (getItemViewType(position) == TYPE_HEADER
+                            || getItemViewType(position) == TYPE_FOOTER){
                         return gridLayoutManager.getSpanCount();
                     }
                     return 1;
                 }
+
             });
+
         }
     }
 
