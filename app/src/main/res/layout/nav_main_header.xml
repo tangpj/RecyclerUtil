@@ -190,41 +190,41 @@
         </RadioGroup>
 
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="0.1dp"
-            android:layout_marginTop="8dp"
-            android:background="@color/linesColor"/>
+        <!--<View-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="0.1dp"-->
+            <!--android:layout_marginTop="8dp"-->
+            <!--android:background="@color/linesColor"/>-->
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:layout_marginLeft="8dp"
-            android:text="方向"/>
+        <!--<TextView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginTop="16dp"-->
+            <!--android:layout_marginLeft="8dp"-->
+            <!--android:text="方向"/>-->
 
-        <RadioGroup
-            android:id="@+id/group.orientation"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
-            android:layout_marginTop="8dp">
+        <!--<RadioGroup-->
+            <!--android:id="@+id/group.orientation"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginLeft="8dp"-->
+            <!--android:layout_marginTop="8dp">-->
 
-            <RadioButton
-                android:id="@+id/radio.orientation.horizontal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:checked="true"
-                android:text="垂直"/>
+            <!--<RadioButton-->
+                <!--android:id="@+id/radio.orientation.vertical"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:checked="true"-->
+                <!--android:text="垂直"/>-->
 
-            <RadioButton
-                android:id="@+id/radio.orientation.vertical"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="横向"/>
+            <!--<RadioButton-->
+                <!--android:id="@+id/radio.orientation.horizontal"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:text="横向"/>-->
 
 
-        </RadioGroup>
+        <!--</RadioGroup>-->
     </LinearLayout>
 
 </android.support.v4.widget.NestedScrollView>

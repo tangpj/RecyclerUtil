@@ -274,7 +274,7 @@ public class SimpleDecoration extends RecyclerView.ItemDecoration{
                     , 0
                     , interval - recoupInterval * intervalOffset
                     , interval);
-            Log.d(TAG, "outGridVerticalRect: isLastRaw = " + position);
+//            Log.d(TAG, "outGridVerticalRect: isLastRaw = " + position);
 
 
         } else {
@@ -286,7 +286,7 @@ public class SimpleDecoration extends RecyclerView.ItemDecoration{
 
         }
         intervalOffset++;
-        Log.d(TAG, "outGridVerticalRect: intervalOffset = " + intervalOffset);
+//        Log.d(TAG, "outGridVerticalRect: intervalOffset = " + intervalOffset);
     }
 
     private void outTransparentVerticalRect(Rect outRect,RecyclerView parent,int position,int spanCount,int childCount){

@@ -16,6 +16,7 @@ import android.support.v7.widget.OrientationHelper;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -36,7 +37,6 @@ public class MainActivity extends AppCompatActivity implements RadioGroup.OnChec
     private RadioGroup dividerGroup;
     private RadioButton linearLayoutRadio;
     private RadioButton dividerLinesRadio;
-    private RadioButton orientationVerticalRadio;
 
     private EditText intervalInput;
     private EditText spanInput;
@@ -79,6 +79,27 @@ public class MainActivity extends AppCompatActivity implements RadioGroup.OnChec
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.mipmap.main_nav_img);
 
+        drawerLayout.addDrawerListener(new DrawerLayout.DrawerListener() {
+            @Override
+            public void onDrawerSlide(View drawerView, float slideOffset) {
+
+            }
+
+            @Override
+            public void onDrawerOpened(View drawerView) {
+
+            }
+
+            @Override
+            public void onDrawerClosed(View drawerView) {
+                closeInputMethod();
+            }
+
+            @Override
+            public void onDrawerStateChanged(int newState) {
+
+            }
+        });
 
         initNavigationView(navigationView.getHeaderView(0));
     }
@@ -116,7 +137,6 @@ public class MainActivity extends AppCompatActivity implements RadioGroup.OnChec
         dividerGroup = (RadioGroup) v.findViewById(R.id.group_divider);
         linearLayoutRadio = (RadioButton) v.findViewById(R.id.radio_layout_linear);
         dividerLinesRadio = (RadioButton) v.findViewById(R.id.radio_divider_lines);
-        orientationVerticalRadio = (RadioButton) v.findViewById(R.id.radio_orientation_vertical);
 
         intervalInput = (EditText) v.findViewById(R.id.input_interval);
         spanInput = (EditText) v.findViewById(R.id.input_span);
@@ -149,7 +169,6 @@ public class MainActivity extends AppCompatActivity implements RadioGroup.OnChec
                         .commit();
                 linearLayoutRadio.setChecked(true);
                 dividerLinesRadio.setChecked(true);
-                orientationVerticalRadio.setChecked(true);
                 span = 2;
                 interval = 1;
                 spanInput.setText(2 + "");
@@ -164,7 +183,6 @@ public class MainActivity extends AppCompatActivity implements RadioGroup.OnChec
                         .commit();
                 linearLayoutRadio.setChecked(true);
                 dividerLinesRadio.setChecked(true);
-                orientationVerticalRadio.setChecked(true);
                 break;
 
             case R.id.radio_layout_linear:
@@ -201,6 +219,7 @@ public class MainActivity extends AppCompatActivity implements RadioGroup.OnChec
                 testSimpleFragment.setDivider(SimpleDecoration.newDrawableDivider(this,interval,R.mipmap.ic_launcher));
                 secondaryFragment.setDivider(SimpleDecoration.newDrawableDivider(this,interval,R.mipmap.ic_launcher));
                 break;
+
         }
         lm = testSimpleFragment.getLayoutManager();
         drawerLayout.closeDrawers();
@@ -208,10 +227,25 @@ public class MainActivity extends AppCompatActivity implements RadioGroup.OnChec
 
 
     public void resetValue(View v){
-        interval = Integer.valueOf(intervalInput.getText().toString());
-        span = Integer.valueOf(spanInput.getText().toString());
+        String intervalStr = intervalInput.getText().toString();
+        String spanStr = spanInput.getText().toString();
+        if (TextUtils.isEmpty(intervalStr) || TextUtils.isEmpty(spanStr)){
+            Snackbar.make(v,"输入的值不能为空",Snackbar.LENGTH_SHORT).show();
+        }
+
+        if( Integer.valueOf(intervalStr) < 0){
+            Snackbar.make(v,"interval不能小于0",Snackbar.LENGTH_SHORT).show();
+        }
+
+        if (Integer.valueOf(spanStr) < 1){
+            Snackbar.make(v,"span不能小于1",Snackbar.LENGTH_SHORT).show();
+            return;
+        }
+        interval = Integer.valueOf(intervalStr);
+        span = Integer.valueOf(spanStr);
         resetLayoutManager();
         resetInterval();
+        closeInputMethod();
 
 
     }
@@ -228,12 +262,6 @@ public class MainActivity extends AppCompatActivity implements RadioGroup.OnChec
             secondaryFragment.setLayoutManager(new StaggeredGridLayoutManager(span,orientation));
         }
         lm = testSimpleFragment.getLayoutManager();
-        InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-        if(imm.isActive()&&getCurrentFocus()!=null){
-            if (getCurrentFocus().getWindowToken()!=null) {
-                imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
-            }
-        }
     }
 
     private void resetInterval(){
@@ -256,6 +284,15 @@ public class MainActivity extends AppCompatActivity implements RadioGroup.OnChec
                 testSimpleFragment.setDivider(SimpleDecoration.newDrawableDivider(this,interval,R.mipmap.ic_launcher));
                 secondaryFragment.setDivider(SimpleDecoration.newDrawableDivider(this,interval,R.mipmap.ic_launcher));
                 break;
+        }
+    }
+
+    private void closeInputMethod(){
+        InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+        if(imm.isActive()&&getCurrentFocus()!=null){
+            if (getCurrentFocus().getWindowToken()!=null) {
+                imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+            }
         }
     }
 }
