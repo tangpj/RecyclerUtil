@@ -1,4 +1,4 @@
-package com.tangpj.recyclerutils;
+package com.tangpj.recyclerviewutils;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;

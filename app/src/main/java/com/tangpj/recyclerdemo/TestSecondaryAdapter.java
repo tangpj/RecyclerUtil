@@ -1,7 +1,6 @@
 package com.tangpj.recyclerdemo;
 
 import android.support.v7.widget.RecyclerView;
-import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,7 +9,7 @@ import android.widget.TextView;
 
 import com.tangpj.recyclerdemo.bean.FriendGroupBean;
 import com.tangpj.recyclerdemo.bean.UserBean;
-import com.tangpj.recyclerutils.SecondaryAdapter;
+import com.tangpj.recyclerviewutils.SecondaryAdapter;
 
 /**
  * @ClassName: TestSecondaryAdapter

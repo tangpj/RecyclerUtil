@@ -10,7 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.tangpj.recyclerdemo.model.UserModel;
-import com.tangpj.recyclerutils.divider.SimpleDecoration;
+import com.tangpj.recyclerviewutils.divider.SimpleDecoration;
 
 import java.util.Arrays;
 

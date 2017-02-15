@@ -1,4 +1,4 @@
-package com.tangpj.recyclerutils;
+package com.tangpj.recyclerviewutils;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;

@@ -1,4 +1,4 @@
-package com.tangpj.recyclerutils;
+package com.tangpj.recyclerviewutils;
 
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -7,9 +7,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.tangpj.recyclerutils.internal.ICreateFooterView;
-import com.tangpj.recyclerutils.internal.ICreateHeaderView;
-import com.tangpj.recyclerutils.internal.ISimpleAdapter;
+import com.tangpj.recyclerviewutils.internal.ICreateFooterView;
+import com.tangpj.recyclerviewutils.internal.ICreateHeaderView;
+import com.tangpj.recyclerviewutils.internal.ISimpleAdapter;
 
 import java.util.List;
 

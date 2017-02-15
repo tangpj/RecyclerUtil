@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.tangpj.recyclerdemo.model.UserModel;
-import com.tangpj.recyclerutils.SimpleAdapter;
+import com.tangpj.recyclerviewutils.SimpleAdapter;
 
 
 /**

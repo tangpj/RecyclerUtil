@@ -20,13 +20,12 @@ import android.text.TextUtils;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
-import com.tangpj.recyclerutils.divider.SimpleDecoration;
+import com.tangpj.recyclerviewutils.divider.SimpleDecoration;
 
 public class MainActivity extends AppCompatActivity implements RadioGroup.OnCheckedChangeListener{
     private static final String TAG = "MainActivity";

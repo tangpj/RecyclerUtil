@@ -1,4 +1,4 @@
-package com.tangpj.recyclerutils.divider;
+package com.tangpj.recyclerviewutils.divider;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -12,11 +12,10 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 
-import com.tangpj.recyclerutils.SimpleAdapter;
+import com.tangpj.recyclerviewutils.SimpleAdapter;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
