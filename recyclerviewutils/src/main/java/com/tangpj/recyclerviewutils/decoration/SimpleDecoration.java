@@ -1,4 +1,4 @@
-package com.tangpj.recyclerviewutils.divider;
+package com.tangpj.recyclerviewutils.decoration;
 
 import android.content.Context;
 import android.content.res.TypedArray;
