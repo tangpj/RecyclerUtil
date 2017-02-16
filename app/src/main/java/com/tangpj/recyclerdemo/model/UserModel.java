@@ -26,6 +26,10 @@ public enum UserModel {
     USER14(new UserBean("USER14",16)),
     USER15(new UserBean("USER15",17)),
     USER16(new UserBean("USER16",17)),
+    USER17(new UserBean("USER17",17)),
+    USER18(new UserBean("USER18",17)),
+    USER19(new UserBean("USER19",17)),
+    USER20(new UserBean("USER20",17)),
     ;
 
     public UserBean user;

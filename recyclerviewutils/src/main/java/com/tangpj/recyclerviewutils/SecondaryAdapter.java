@@ -286,7 +286,7 @@ public abstract class SecondaryAdapter<Group,Child> extends RecyclerView.Adapter
      * @param position item在RecyclerView中的位置
      * @return position对应的一级列表(如position恰好为一级列表,则该position对应的一级列表就是它自己)
      */
-    private int getGroupIndex(int position){
+    public int getGroupIndex(int position){
         if (position > getItemCount() - 1){
             throw new IllegalArgumentException("getGroupIndex : "
                     + "position: " + position + ", Item count: " + getItemCount());

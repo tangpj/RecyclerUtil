@@ -12,13 +12,17 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 
+import com.tangpj.recyclerviewutils.SecondaryAdapter;
 import com.tangpj.recyclerviewutils.SimpleAdapter;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @ClassName: SimpleDecoration
@@ -47,7 +51,7 @@ public class SimpleDecoration extends RecyclerView.ItemDecoration{
     //用来计算item间分割线的偏移系数
     private int intervalOffset;
     //主要用来记录header或SecondaryAdapter中的Group
-    private int fullSpanViewIndex = 0;
+    private List<Integer> fullSpanViewIndex;
 
     private Drawable mDivider;
     private static final int[] ATTRS = new int[] {android.R.attr.listDivider};
@@ -203,10 +207,13 @@ public class SimpleDecoration extends RecyclerView.ItemDecoration{
         int span;
         int position;
         RecyclerView.LayoutManager layoutManager = parent.getLayoutManager();
+        RecyclerView.Adapter adapter = parent.getAdapter();
         position = layoutManager.getPosition(view);
         if (layoutManager.getItemViewType(view) == SimpleAdapter.TYPE_HEADER){
             outRect.set(0, 0, 0, interval);
-            fullSpanViewIndex = position ;
+            if (adapter instanceof SecondaryAdapter){
+                fullSpanViewIndex = ((SecondaryAdapter)adapter).getGroupPositions() ;
+            }
             return;
         }
         if (layoutManager.getItemViewType(view) == SimpleAdapter.TYPE_FOOTER){
@@ -258,7 +265,6 @@ public class SimpleDecoration extends RecyclerView.ItemDecoration{
             return;
         }
         if (isFirstColumn(parent,position,spanCount,childCount)){
-            intervalOffset = 1;
 //            Log.d(TAG, "outGridVerticalRect: isFirstColumn = " + position);
             outRect.set(0, 0, interval - recoupInterval, interval);
         }else if (isLastColumn(parent, position, spanCount, childCount)) {
@@ -266,7 +272,6 @@ public class SimpleDecoration extends RecyclerView.ItemDecoration{
                     0,
                     0,
                     interval);
-            intervalOffset = spanCount - spanCount - 1;
 //            Log.d(TAG, "outGridVerticalRect: isLastColumn = " + position);
         }else if (isLastRaw(parent, position, spanCount, childCount)) {
             outRect.set(recoupInterval * (intervalOffset - 1)
@@ -284,8 +289,10 @@ public class SimpleDecoration extends RecyclerView.ItemDecoration{
 //            Log.d(TAG, "outGridVerticalRect: normal = " + position);
 
         }
-        intervalOffset++;
-//        Log.d(TAG, "outGridVerticalRect: intervalOffset = " + intervalOffset);
+        Log.d(TAG, "outGridVerticalRect: intervalOffset = " + intervalOffset);
+        Log.d(TAG, "outGridVerticalRect: position = " + position);
+        Log.d(TAG, "outGridVerticalRect: span = " + spanCount);
+        Log.d(TAG, "--------------------------------------------------------------------------------------------- ");
     }
 
     private void outTransparentVerticalRect(Rect outRect,RecyclerView parent,int position,int spanCount,int childCount){
@@ -319,7 +326,6 @@ public class SimpleDecoration extends RecyclerView.ItemDecoration{
     private void outGridHorizontalRect(Rect outRect,RecyclerView parent,int position,int spanCount,int childCount){
         if (isFirstColumn(parent,position,spanCount,childCount)){
             outRect.set(0, 0, interval, interval);
-            intervalOffset = 1;
 
         }else if (isLastColumn(parent, position, spanCount, childCount)) {
             outRect.set(0,
@@ -384,18 +390,29 @@ public class SimpleDecoration extends RecyclerView.ItemDecoration{
      */
     private boolean isFirstColumn(RecyclerView parent,int position,int span, int childCount){
         RecyclerView.LayoutManager layoutManager = parent.getLayoutManager();
+        RecyclerView.Adapter adapter = parent.getAdapter();
+        int groupPosition = 0;
+        if (adapter instanceof SecondaryAdapter && fullSpanViewIndex !=null){
+            int groupIndex = ((SecondaryAdapter)adapter).getGroupIndex(position);
+            groupPosition = fullSpanViewIndex.get(groupIndex);
+        }
         if (position == 0){
+            intervalOffset = 1;
             return true;
         }
 
         if (layoutManager instanceof GridLayoutManager){
-            if (((position - fullSpanViewIndex ) % span) == 1){
+            intervalOffset = (position - groupPosition ) % span;
+
+            if (intervalOffset == 1){
                 return true;
             }
         }else if (layoutManager instanceof StaggeredGridLayoutManager){
             int orientation = ((StaggeredGridLayoutManager)layoutManager).getOrientation();
             if (orientation == StaggeredGridLayoutManager.VERTICAL){
-                if (((position - fullSpanViewIndex ) % span) == 1){
+                intervalOffset = (position - groupPosition ) % span;
+
+                if (intervalOffset == 1){
                     return true;
                 }
             }else {
@@ -415,15 +432,21 @@ public class SimpleDecoration extends RecyclerView.ItemDecoration{
      */
     private boolean isLastColumn(RecyclerView parent,int position,int span,int childCount){
         RecyclerView.LayoutManager layoutManager = parent.getLayoutManager();
+        RecyclerView.Adapter adapter = parent.getAdapter();
+        int groupPosition = 0;
+        if (adapter instanceof SecondaryAdapter && fullSpanViewIndex !=null){
+            int groupIndex = ((SecondaryAdapter)adapter).getGroupIndex(position);
+            groupPosition = fullSpanViewIndex.get(groupIndex);
+        }
         if (layoutManager instanceof GridLayoutManager ){
 
-            if (((position - fullSpanViewIndex ) % span) == 0){
+            if (((position - groupPosition ) % span) == 0){
                 return true;
             }
         }else if (layoutManager instanceof StaggeredGridLayoutManager){
             int orientation = ((StaggeredGridLayoutManager) layoutManager).getOrientation();
             if (orientation == StaggeredGridLayoutManager.VERTICAL){
-                if (((position - fullSpanViewIndex ) % span) == 0){
+                if (((position - groupPosition ) % span) == 0){
                     return true;
                 }
             }else {
@@ -468,7 +491,6 @@ public class SimpleDecoration extends RecyclerView.ItemDecoration{
         }
         return false;
     }
-
 
 
 

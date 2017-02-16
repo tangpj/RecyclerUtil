@@ -90,8 +90,8 @@ public class TestSecondaryFragment extends Fragment{
         List<FriendGroupBean> friendGroups = new ArrayList<>();
         friendGroups.add(new FriendGroupBean("家人",family));
         friendGroups.add(new FriendGroupBean("同事",colleague));
-        friendGroups.add(new FriendGroupBean("朋友",friend));
         friendGroups.add(new FriendGroupBean("同学",null));
+        friendGroups.add(new FriendGroupBean("朋友",friend));
         return friendGroups;
     }
 
