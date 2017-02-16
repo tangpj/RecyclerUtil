@@ -31,8 +31,9 @@ import java.util.List;
  * @Description: 简单的RecyclerView分割线
  * 不适用于自定义LayoutManger和特殊布局的Adapter等
  * 仅支持LinearLayoutManager、GridLayoutManager、StaggeredLayoutManager
- * 当添加了header和footer时，在LinearLayoutManager和StaggeredLayoutManager的横向模式时
- * 显示会有问题，所以使用这两种模式不建议添加header和footer
+ * 当添加了header和footer并处于horizontal模式时显示会有问题
+ * 所以处于horizontal模式不建议添加header和footer
+ *
  */
 
 public class SimpleDecoration extends RecyclerView.ItemDecoration{
@@ -289,10 +290,6 @@ public class SimpleDecoration extends RecyclerView.ItemDecoration{
 //            Log.d(TAG, "outGridVerticalRect: normal = " + position);
 
         }
-        Log.d(TAG, "outGridVerticalRect: intervalOffset = " + intervalOffset);
-        Log.d(TAG, "outGridVerticalRect: position = " + position);
-        Log.d(TAG, "outGridVerticalRect: span = " + spanCount);
-        Log.d(TAG, "--------------------------------------------------------------------------------------------- ");
     }
 
     private void outTransparentVerticalRect(Rect outRect,RecyclerView parent,int position,int spanCount,int childCount){
