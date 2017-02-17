@@ -1,5 +1,6 @@
 package com.tangpj.recyclerviewutils.internal;
 
+import android.support.annotation.LayoutRes;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +22,7 @@ public interface ICreateFooterView {
      * @Description: 设置footer
      * 只能在adapter中初始化view
      */
+    @LayoutRes
     int setFooterView();
 
     /**
@@ -42,7 +44,6 @@ public interface ICreateFooterView {
      * @param footer footerHolder中的itemView
      *               通过<footer/>可以处理<footer/>
      *               中的控件
-     * @param position footer所在的位置
      */
-    void onBindFooterView(View footer, int position);
+    void onBindFooterView(View footer);
 }

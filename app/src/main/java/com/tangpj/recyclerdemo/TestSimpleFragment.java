@@ -51,7 +51,7 @@ public class TestSimpleFragment extends Fragment {
         list.setAdapter(adapter);
         list.addItemDecoration(decoration);
 
-        adapter.setData(Arrays.asList(UserModel.values()));
+        adapter.setData(new UserModel().getData());
     }
 
     public void setLayoutManager(RecyclerView.LayoutManager layoutManager){

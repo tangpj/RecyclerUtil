@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.tangpj.recyclerdemo.bean.UserBean;
 import com.tangpj.recyclerdemo.model.UserModel;
 import com.tangpj.recyclerviewutils.SimpleAdapter;
 
@@ -18,7 +19,7 @@ import com.tangpj.recyclerviewutils.SimpleAdapter;
  * @Description: TODO
  */
 
-public class TestSimpleAdapter extends SimpleAdapter<UserModel>{
+public class TestSimpleAdapter extends SimpleAdapter<UserBean>{
 
     @Override
     public RecyclerView.ViewHolder onCreateNormalView(ViewGroup parent) {
@@ -27,10 +28,10 @@ public class TestSimpleAdapter extends SimpleAdapter<UserModel>{
     }
 
     @Override
-    public void onBindNormalView(RecyclerView.ViewHolder normalHolder, int position, UserModel value) {
-        ((UserHolder) normalHolder).name.setText(value.user.name);
-        ((UserHolder) normalHolder).age.setText(value.user.age + "");
-        ((UserHolder) normalHolder).sex.setText(value.user.sex);
+    public void onBindNormalView(RecyclerView.ViewHolder normalHolder, int position, UserBean value) {
+        ((UserHolder) normalHolder).name.setText(value.name);
+        ((UserHolder) normalHolder).age.setText(value.age + "");
+        ((UserHolder) normalHolder).sex.setText(value.sex);
     }
 
     @Override
@@ -44,7 +45,7 @@ public class TestSimpleAdapter extends SimpleAdapter<UserModel>{
     }
 
     @Override
-    public void onBindHeaderView(View header, int position) {
+    public void onBindHeaderView(View header) {
         header.findViewById(R.id.header_button)
                 .setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -55,7 +56,7 @@ public class TestSimpleAdapter extends SimpleAdapter<UserModel>{
     }
 
     @Override
-    public void onBindFooterView(View footer, int position) {
+    public void onBindFooterView(View footer) {
         footer.findViewById(R.id.footer_button)
                 .setOnClickListener(new View.OnClickListener() {
                     @Override

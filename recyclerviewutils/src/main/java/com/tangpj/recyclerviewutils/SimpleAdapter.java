@@ -80,32 +80,29 @@ public abstract class SimpleAdapter<E> extends RecyclerView.Adapter<RecyclerView
             }
             return;
         }
-        if (getItemViewType(position) == TYPE_HEADER){
-            onBindHeaderView(holder.itemView,position);
-            return;
-        }
-        onBindFooterView(holder.itemView,position);
     }
 
     @Override
     public RecyclerView.ViewHolder onCreateHeader(ViewGroup parent) {
         View header = LayoutInflater.from(parent.getContext()).inflate(setHeaderView(),parent,false);
+        onBindHeaderView(header);
         return new Holder(header);
     }
 
     @Override
     public RecyclerView.ViewHolder onCreateFooterView(ViewGroup parent) {
         View footer = LayoutInflater.from(parent.getContext()).inflate(setFooterView(),parent,false);
+        onBindFooterView(footer);
         return new Holder(footer);
     }
 
     @Override
-    public void onBindHeaderView(View header, int position) {
+    public void onBindHeaderView(View header) {
         // TODO: 17/1/22 如果子类需要对Footer监听控件或者进行数据绑定，则需要覆盖该方法
     }
 
     @Override
-    public void onBindFooterView(View footer, int position) {
+    public void onBindFooterView(View footer) {
         // TODO: 17/1/22 如果子类需要对Header监听控件或者进行数据绑定，则需要覆盖该方法
     }
 

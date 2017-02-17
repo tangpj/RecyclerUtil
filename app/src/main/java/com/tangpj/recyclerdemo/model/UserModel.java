@@ -2,6 +2,9 @@ package com.tangpj.recyclerdemo.model;
 
 import com.tangpj.recyclerdemo.bean.UserBean;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @ClassName: UserModel
  * @author create by Tang
@@ -9,32 +12,39 @@ import com.tangpj.recyclerdemo.bean.UserBean;
  * @Description: TODO
  */
 
-public enum UserModel {
-    USER1(new UserBean("USER1",16)),
-    USER2(new UserBean("USER2",16)),
-    USER3(new UserBean("USER3",16)),
-    USER4(new UserBean("USER4",16)),
-    USER5(new UserBean("USER5",16)),
-    USER6(new UserBean("USER6",16)),
-    USER7(new UserBean("USER7",16)),
-    USER8(new UserBean("USER8",16)),
-    USER9(new UserBean("USER9",16)),
-    USER10(new UserBean("USER10",16)),
-    USER11(new UserBean("USER11",16)),
-    USER12(new UserBean("USER12",16)),
-    USER13(new UserBean("USER13",16)),
-    USER14(new UserBean("USER14",16)),
-    USER15(new UserBean("USER15",17)),
-    USER16(new UserBean("USER16",17)),
-    USER17(new UserBean("USER17",17)),
-    USER18(new UserBean("USER18",17)),
-    USER19(new UserBean("USER19",17)),
-    USER20(new UserBean("USER20",17)),
-    ;
+public class UserModel {
+    private List<UserBean> list ;
 
-    public UserBean user;
+    public UserModel(){
+        list = new ArrayList<>();
+        init();
+    }
 
-    UserModel(UserBean user){
-        this.user = user;
+
+    private  void init(){
+        list.add(new UserBean("USER1",16));
+        list.add(new UserBean("USER2",16));
+        list.add(new UserBean("USER3",16));
+        list.add(new UserBean("USER4",16));
+        list.add(new UserBean("USER5",16));
+        list.add(new UserBean("USER6",16));
+        list.add(new UserBean("USER7",16));
+        list.add(new UserBean("USER8",16));
+        list.add(new UserBean("USER9",16));
+        list.add(new UserBean("USER10",16));
+        list.add(new UserBean("USER11",16));
+        list.add(new UserBean("USER12",16));
+        list.add(new UserBean("USER13",16));
+        list.add(new UserBean("USER14",16));
+        list.add(new UserBean("USER15",17));
+        list.add(new UserBean("USER16",17));
+        list.add(new UserBean("USER17",17));
+        list.add(new UserBean("USER18",17));
+        list.add(new UserBean("USER19",17));
+        list.add(new UserBean("USER20",17));
+    }
+
+    public List<UserBean> getData(){
+        return list;
     }
 }

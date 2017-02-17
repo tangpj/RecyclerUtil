@@ -1,6 +1,7 @@
 package com.tangpj.recyclerviewutils.internal;
 
 
+import android.support.annotation.LayoutRes;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +23,7 @@ public interface ICreateHeaderView {
      * @Description: 设置header
      * 只能在adapter中初始化view
      */
+    @LayoutRes
     int setHeaderView();
 
     /**
@@ -43,7 +45,6 @@ public interface ICreateHeaderView {
      * @param header headerHolder中的itemView
      *               通过<header/>可以处理<header/>
      *               中的控件
-     * @param position header所在的位置
      */
-    void onBindHeaderView(View header, int position);
+    void onBindHeaderView(View header);
 }
