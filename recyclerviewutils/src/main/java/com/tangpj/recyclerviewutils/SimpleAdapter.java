@@ -193,6 +193,11 @@ public abstract class SimpleAdapter<E> extends RecyclerView.Adapter<RecyclerView
     }
 
     @Override
+    public void clear() {
+        data.clear();
+    }
+
+    @Override
     public int size() {
         if (data == null){
             return 0;

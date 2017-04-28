@@ -52,6 +52,9 @@ public interface ISimpleAdapter<E> {
 
     void removeItem(int position);
 
+    void clear();
+
     int size();
+
 
 }
