@@ -163,6 +163,7 @@ public abstract class SimpleAdapter<E> extends RecyclerView.Adapter<RecyclerView
     @Override
     public void setData(int start, Collection<E> newData) {
         replaceAssign(start,data,new ArrayList<>(newData));
+        notifyItemChanged(start,data.size() - 1);
     }
 
     @Override
@@ -177,7 +178,10 @@ public abstract class SimpleAdapter<E> extends RecyclerView.Adapter<RecyclerView
             this.data = new ArrayList<>(data);
         }
         if (!this.data.contains(data)){
+            int fromPosition = this.data.size() - 1;
+            int endPosition = this.data.size() + data.size() - 1;
             this.data.addAll(data);
+            notifyItemChanged(fromPosition,endPosition);
         }
     }
 
