@@ -36,6 +36,14 @@ public interface ISimpleAdapter<E> {
 
     void setData(Collection<E> data);
 
+    /**
+     * @Method: setData
+     * @author create by Tang
+     * @date 2017/4/28 上午11:08
+     * @Description: 从start位开始，替换newData长度的item
+     */
+    void setData(int start,Collection<E> newData);
+
     void addItem(E value);
 
     void addAllItem(Collection<E> data);

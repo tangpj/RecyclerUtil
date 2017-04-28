@@ -161,6 +161,11 @@ public abstract class SimpleAdapter<E> extends RecyclerView.Adapter<RecyclerView
     }
 
     @Override
+    public void setData(int start, Collection<E> newData) {
+        replaceAssign(start,data,new ArrayList<>(newData));
+    }
+
+    @Override
     public void addItem(E value) {
         data.add(value);
         notifyItemChanged(data.size() - 1);
@@ -228,6 +233,14 @@ public abstract class SimpleAdapter<E> extends RecyclerView.Adapter<RecyclerView
         return position - 1;
     }
 
+    private static <E> void replaceAssign(int start ,List<E> oldList,List<E> newList ){
+        if (start >= oldList.size()){
+            throw new IndexOutOfBoundsException("Index: "+start+", Size: "+oldList.size());
+        }
+        for (int i = start; i < start + newList.size(); i++){
+            oldList.set(i,newList.get(i - start));
+        }
+    }
 
 
 
