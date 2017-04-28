@@ -194,6 +194,9 @@ public abstract class SimpleAdapter<E> extends RecyclerView.Adapter<RecyclerView
 
     @Override
     public int size() {
+        if (data == null){
+            return 0;
+        }
         return data.size();
     }
 
