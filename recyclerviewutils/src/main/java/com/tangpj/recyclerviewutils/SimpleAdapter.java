@@ -176,7 +176,9 @@ public abstract class SimpleAdapter<E> extends RecyclerView.Adapter<RecyclerView
         if (this.data == null){
             this.data = new ArrayList<>(data);
         }
-        this.data.addAll(data);
+        if (!this.data.contains(data)){
+            this.data.addAll(data);
+        }
     }
 
     @Override
