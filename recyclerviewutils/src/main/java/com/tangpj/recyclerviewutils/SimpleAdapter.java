@@ -193,6 +193,11 @@ public abstract class SimpleAdapter<E> extends RecyclerView.Adapter<RecyclerView
     }
 
     @Override
+    public int size() {
+        return data.size();
+    }
+
+    @Override
     public void onAttachedToRecyclerView(RecyclerView recyclerView) {
         super.onAttachedToRecyclerView(recyclerView);
         RecyclerView.LayoutManager layoutManager = recyclerView.getLayoutManager();
