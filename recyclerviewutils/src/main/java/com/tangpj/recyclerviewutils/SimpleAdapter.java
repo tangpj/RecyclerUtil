@@ -11,6 +11,8 @@ import com.tangpj.recyclerviewutils.internal.ICreateFooterView;
 import com.tangpj.recyclerviewutils.internal.ICreateHeaderView;
 import com.tangpj.recyclerviewutils.internal.ISimpleAdapter;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -153,8 +155,8 @@ public abstract class SimpleAdapter<E> extends RecyclerView.Adapter<RecyclerView
     }
 
     @Override
-    public void setData(List<E> data) {
-        this.data = data;
+    public void setData(Collection<E> data) {
+        this.data = new ArrayList<>(data);
         notifyDataSetChanged();
     }
 
@@ -162,6 +164,14 @@ public abstract class SimpleAdapter<E> extends RecyclerView.Adapter<RecyclerView
     public void addItem(E value) {
         data.add(value);
         notifyItemChanged(data.size() - 1);
+    }
+
+    @Override
+    public void addAllItem(Collection<E> data) {
+        if (this.data == null){
+            this.data = new ArrayList<>(data);
+        }
+        this.data.addAll(data);
     }
 
     @Override

@@ -3,6 +3,7 @@ package com.tangpj.recyclerviewutils.internal;
 import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
 
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -33,9 +34,11 @@ public interface ISimpleAdapter<E> {
 
     void onBindNormalView (RecyclerView.ViewHolder normalHolder, int position,E value);
 
-    void setData(List<E> data);
+    void setData(Collection<E> data);
 
     void addItem(E value);
+
+    void addAllItem(Collection<E> data);
 
     void removeItem(E value);
 
